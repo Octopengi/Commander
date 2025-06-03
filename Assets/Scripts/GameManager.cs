@@ -69,9 +69,17 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         currScene = SceneManager.GetActiveScene().name;
-        if (currScene.Contains("Level") && !transition) {LevelUpdate();}
+        if (currScene.Contains("Level") && !transition) { LevelUpdate(); }
+        if (Input.GetKeyDown(KeyCode.O)) { SceneSwap("Level100"); }
+        if (Input.GetKey(KeyCode.L))
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) {LevelSelected(1);}
+            if (Input.GetKeyDown(KeyCode.Alpha2)) {LevelSelected(2);}
+            if (Input.GetKeyDown(KeyCode.Alpha3)) {LevelSelected(3);}
+        }
     }
 
     void FixedUpdate() {
