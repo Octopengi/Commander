@@ -171,7 +171,7 @@ MonoBehaviour:
   spdMLT: 10
   jumpMLT: 9
   hvForce: 2.2
-  dashForce: 11.4
+  dashForce: 13
   fuelRate: 40
   dashFuel: 13.5
   checkNum: 0

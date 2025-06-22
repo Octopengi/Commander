@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         currScene = SceneManager.GetActiveScene().name;
         if (currScene.Contains("Level") && !transition) { LevelUpdate(); }
-        if (Input.GetKeyDown(KeyCode.O)) { SceneSwap("Level100"); }
+        if (Input.GetKeyDown(KeyCode.O)) { LevelSelected(100); }
         if (Input.GetKey(KeyCode.L))
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) {LevelSelected(1);}

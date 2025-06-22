@@ -8,7 +8,7 @@ public class PlayerCont : MonoBehaviour
     GameObject blackHole;
 
     Rigidbody2D rb;
-    CapsuleCollider2D normCol;
+    CapsuleCollider2D cc;
     SpriteRenderer sr;
     Transform feet;
     Transform point;
@@ -37,15 +37,19 @@ public class PlayerCont : MonoBehaviour
     float fuel = 100.0f;
     float move;
     float dashTime = 0.0f;
+    float initLinDamp;
     string direct = "R";
 
     Vector2 respawn = new Vector2(0.0f, 0.0f);
+    Vector2 ccNormSz = new Vector2(0.35f, 1.0f);
+    Vector2 ccDashSz = new Vector2(0.28f, 0.28f);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        initLinDamp = rb.linearDamping;
         sr = GetComponent<SpriteRenderer>();
-        normCol = GetComponent<CapsuleCollider2D>();
+        cc = GetComponent<CapsuleCollider2D>();
         feet = transform.Find("Feet");
         point = transform.Find("Point");
         groundMask = LayerMask.GetMask("Ground");
@@ -61,7 +65,9 @@ public class PlayerCont : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) {
+        Debug.Log(rb.linearDamping);
+        if (Input.GetKeyDown(KeyCode.P))
+        {
             bhImmune = true;
             gameManager.SceneSwap("MainMenu");
         }
@@ -81,7 +87,7 @@ public class PlayerCont : MonoBehaviour
         } else hover = false;
 
         if (Input.GetMouseButtonDown(0) && fuel >= dashFuel && !engDead && dashTime <= 0.0f) {
-            normCol.size = new Vector2(0.28f, 0.28f);
+            cc.size = ccDashSz; rb.linearDamping = 0.0f;
             dash = true; fuel -= dashFuel;
             if (fuel <= 0) {
                 engDead = true;
@@ -105,10 +111,19 @@ public class PlayerCont : MonoBehaviour
     void FixedUpdate() {
         var mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); mPos.z = 0;
         var mDir = mPos - transform.position; mDir.Normalize();
-        if (dashTime > 0) {
+        if (dashTime > 0)
+        {
             dashTime -= Time.deltaTime;
-            if (dashTime <= 0) {
-                normCol.size = new Vector2(0.35f, 1.0f);
+            if (dashTime <= 0)
+            {
+                cc.size = ccNormSz; rb.linearDamping = initLinDamp;
+                rb.linearVelocityX /= 1.26f; rb.linearVelocityY /= 1.26f;
+            }
+            else if (dashTime < 0.08f && rb.linearDamping != initLinDamp)
+            {
+                rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, rb.linearVelocityX / 3f, Time.deltaTime * 7.8f);
+                rb.linearVelocityY = Mathf.Lerp(rb.linearVelocityY, rb.linearVelocityY / 3f, Time.deltaTime * 7.8f);
+                rb.linearDamping = Mathf.Lerp(rb.linearDamping, initLinDamp, Time.deltaTime * 5.5f);
             }
         }
         /*if (blackHole != null) {
@@ -145,7 +160,7 @@ public class PlayerCont : MonoBehaviour
         }
 
         if (dash) {
-            dash = false; dashTime = 0.35f;
+            dash = false; dashTime = 0.25f;
             rb.linearVelocityX /= 5.0f;
             rb.linearVelocityY /= 5.0f;
             rb.AddForce(mDir * dashForce, ForceMode2D.Impulse);
@@ -189,8 +204,8 @@ public class PlayerCont : MonoBehaviour
     void Hurt() {
         if (!bhImmune) {
             bhImmune = true;
-            rb.linearVelocityY = 0;
-            rb.linearVelocityX = 0;
+            rb.linearVelocityY = 0; rb.linearVelocityX = 0; rb.linearDamping = initLinDamp;
+            dashTime = 0.0f;
             gameObject.SetActive(false);
             gameManager.DeathTransition();
             fuel = 100.0f;
@@ -200,7 +215,7 @@ public class PlayerCont : MonoBehaviour
     public void playRespawn() {
         transform.position = respawn; fuel = 100.0f; engDead = false; bhImmune = false;
         hover = false; dash = false; dashTime = 0.0f;
-        ChangeSprite(); normCol.size = new Vector2(0.35f, 1.0f);
+        ChangeSprite(); cc.size = ccNormSz;
     }
 
     void ChangeSprite() {
