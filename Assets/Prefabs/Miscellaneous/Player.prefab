@@ -172,8 +172,8 @@ MonoBehaviour:
   jumpMLT: 9
   hvForce: 2.2
   dashForce: 13
-  fuelRate: 40
-  dashFuel: 13.5
+  fuelRate: 42
+  dashFuel: 18
   checkNum: 0
   spriteList:
   - {fileID: -6507135916882675250, guid: ede0e3d437366f948bb9a62b683fe7f4, type: 3}
