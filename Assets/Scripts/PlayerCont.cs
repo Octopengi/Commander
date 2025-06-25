@@ -65,7 +65,6 @@ public class PlayerCont : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(rb.linearDamping);
         if (Input.GetKeyDown(KeyCode.P))
         {
             bhImmune = true;
