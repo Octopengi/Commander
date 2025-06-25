@@ -26,6 +26,7 @@ public class PlayerCont : MonoBehaviour
 
     public Dictionary<string, Sprite> spriteDict = new Dictionary<string, Sprite>();
     public List<Sprite> spriteList = new List<Sprite>();
+    public Transform camMount;
 
     bool grounded;
     bool jump;
@@ -47,13 +48,17 @@ public class PlayerCont : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         rb = GetComponent<Rigidbody2D>();
-        initLinDamp = rb.linearDamping;
         sr = GetComponent<SpriteRenderer>();
         cc = GetComponent<CapsuleCollider2D>();
         feet = transform.Find("Feet");
         point = transform.Find("Point");
+
+        camMount = transform.Find("CamMount");
+        camMount.transform.SetParent(rb.transform);
+        
         groundMask = LayerMask.GetMask("Ground");
         respawn = transform.position;
+        initLinDamp = rb.linearDamping;
         //blackHole = GameObject.Find("Blackhole");
         for (int i = 0; i < spriteList.Count; ++i) {
             spriteDict[spriteList[i].name] = spriteList[i];
@@ -168,22 +173,35 @@ public class PlayerCont : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Checkpoint")) {
-            
-            if (collision.GetComponent<Checkpoint>().checkNum > checkNum) {
+        if (collision.gameObject.CompareTag("Checkpoint"))
+        {
+
+            if (collision.GetComponent<Checkpoint>().checkNum > checkNum)
+            {
                 checkNum = collision.GetComponent<Checkpoint>().checkNum;
                 //respawn = new Vector2(collision.GetComponent<Checkpoint>().respawnX, collision.GetComponent<Checkpoint>().respawnY);
                 respawn = collision.GetComponent<Checkpoint>().respawn;
                 fuel = 100.0f; engDead = false;
             }
-        } else if (collision.gameObject.CompareTag("Orb")) {
+        }
+        else if (collision.gameObject.CompareTag("Orb"))
+        {
             var orb = collision.gameObject.GetComponent<Orb>();
-            if (orb.type == "Fuel" && orb.currCD <= 0) {
+            if (orb.type == "Fuel" && orb.currCD <= 0)
+            {
                 fuel += 80.0f; engDead = false;
                 //orb.currCD = orb.cd;
             }
-        } else if (collision.gameObject.CompareTag("End")) {
+        }
+        else if (collision.gameObject.CompareTag("End"))
+        {
             bhImmune = true;
+        }
+        else if (collision.gameObject.CompareTag("CamAdjust"))
+        {
+            camMount.transform.localPosition = collision.gameObject.GetComponent<CamAdjust>().camOffSet;
+            Camera.main.GetComponent<CamCont>().SetClamp(collision.gameObject.GetComponent<CamAdjust>().topL,
+            collision.gameObject.GetComponent<CamAdjust>().botR);
         }
     }
 

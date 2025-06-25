@@ -35,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 7942317186857438757}
   - {fileID: 595687694463501456}
+  - {fileID: 4409742053460918437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3341913757023289714
@@ -183,6 +184,7 @@ MonoBehaviour:
   - {fileID: -1601751404140149275, guid: 70ecb268b3ee67b49b2c268ca4ec9729, type: 3}
   - {fileID: 519588746701559, guid: 79154865694f3514eaf22249e4ad0116, type: 3}
   - {fileID: -2437415070031230301, guid: e4e97adafdfa34f4ab81900b8a358247, type: 3}
+  camMount: {fileID: 0}
   engDead: 0
 --- !u!1 &3822015815248357134
 GameObject:
@@ -271,6 +273,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4795981479395168511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4409742053460918437}
+  m_Layer: 0
+  m_Name: CamMount
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4409742053460918437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4795981479395168511}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1929303564352614830}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4939939039923432942
 GameObject:
   m_ObjectHideFlags: 0
