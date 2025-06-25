@@ -10,7 +10,7 @@ public class Orb : MonoBehaviour
     public float currCD = 0.0f;
 
     SpriteRenderer sr;
-    CircleCollider2D sc2d;
+    CircleCollider2D cc2d;
     GameObject blackHole;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -19,7 +19,7 @@ public class Orb : MonoBehaviour
         General.PointToBH(this.gameObject);
 
         sr = gameObject.GetComponent<SpriteRenderer>();
-        sc2d = gameObject.GetComponent<CircleCollider2D>();
+        cc2d = gameObject.GetComponent<CircleCollider2D>();
     }
 
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class Orb : MonoBehaviour
 
         if (currCD <= 0) {
             sr.sprite = active;
-            sc2d.enabled = true;
+            cc2d.enabled = true;
         }
     }
 
@@ -43,7 +43,7 @@ public class Orb : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player") && currCD <= 0) {
-            sr.sprite = inactive; currCD = cd; sc2d.enabled = false;
+            sr.sprite = inactive; currCD = cd; cc2d.enabled = false;
         }
     }
 }
